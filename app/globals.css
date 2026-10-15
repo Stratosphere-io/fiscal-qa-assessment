@@ -1,0 +1,439 @@
+:root {
+  --surface-base: #1c1c21;
+  --surface-primary: #2c2c35;
+  --surface-secondary: #40404f;
+  --surface-hover: #5e5e74;
+  --border-low-contrast: #40404f;
+  --border-input: #5e5e74;
+  --text-primary: #ffffff;
+  --text-tertiary: #9a9489;
+  --text-green: #3db356;
+  --text-red: #ff6262;
+  --accent-green: #27aa43;
+  --chart-bar: #2771ea;
+  --surface-error: #480707;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
+}
+
+.muted {
+  color: var(--text-tertiary);
+}
+
+.positive {
+  color: var(--text-green);
+}
+
+.negative {
+  color: var(--text-red);
+}
+
+/* Layout */
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-low-contrast);
+  padding: 10px 16px;
+}
+
+.plan-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.plan-switcher .muted {
+  margin-right: 6px;
+}
+
+.plan-switcher button {
+  font: inherit;
+  color: inherit;
+  background: var(--surface-secondary);
+  border: 0;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+}
+
+.plan-switcher button[aria-pressed="true"] {
+  background: var(--accent-green);
+  font-weight: 600;
+}
+
+.site-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.company-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-low-contrast);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+
+.error {
+  background: var(--surface-error);
+  color: var(--text-red);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+
+/* Covers the current page while the next one loads, so nothing moves until the new figures arrive.
+   It fades in after a short delay, so fast loads don't flash. */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+  background: color-mix(in srgb, var(--surface-base) 60%, transparent);
+  cursor: progress;
+  opacity: 0;
+  animation: fade-in 150ms ease 100ms forwards;
+}
+
+.spinner {
+  position: sticky;
+  top: 45vh;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border-input);
+  border-top-color: var(--text-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Company search */
+
+.company-search {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 360px;
+}
+
+.company-search label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.company-search input {
+  font: inherit;
+  color: inherit;
+  background: var(--surface-base);
+  padding: 8px 12px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-xs);
+}
+
+.company-search input:focus {
+  outline: 2px solid var(--accent-green);
+  outline-offset: -1px;
+}
+
+/* The company list opens below the search box, over the page. */
+.company-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 4px;
+  padding: 4px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-low-contrast);
+  border-radius: var(--radius-xs);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 40%);
+}
+
+.company-dropdown .muted {
+  margin: 6px 8px;
+}
+
+.company-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.company-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px;
+  border-left: 2px solid transparent;
+  border-radius: var(--radius-xs);
+}
+
+.company-list a:hover,
+.company-list a:focus-visible {
+  background: var(--surface-secondary);
+}
+
+.company-list a[aria-current="page"] {
+  background: var(--surface-secondary);
+  border-left-color: var(--accent-green);
+  font-weight: 600;
+}
+
+/* Company header and period toggle */
+
+.company-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.company-header {
+  flex: 1 1 480px;
+}
+
+.company-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.chip {
+  padding: 2px 8px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.company-header p {
+  margin: 4px 0 0;
+}
+
+.description {
+  max-width: 760px;
+  color: var(--text-tertiary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.period-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--surface-secondary);
+  border-radius: var(--radius-xs);
+}
+
+.period-toggle a {
+  padding: 4px 14px;
+  border-radius: var(--radius-xs);
+  font-weight: 500;
+}
+
+.period-toggle a[aria-current="page"] {
+  background: var(--accent-green);
+}
+
+.period-toggle .locked {
+  padding: 4px 14px;
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.pro-badge {
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: var(--radius-xs);
+  background: var(--surface-base);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-green);
+}
+
+/* Key figures */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.summary-cards dt {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.summary-cards dd {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-cards dd.detail {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Revenue chart */
+
+.chart {
+  margin: 0;
+}
+
+.chart figcaption {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chart svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-bar rect {
+  fill: var(--chart-bar);
+}
+
+.chart-value,
+.chart-label {
+  font-size: 11px;
+  fill: var(--text-tertiary);
+}
+
+/* Income statement table */
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border-low-contrast);
+  border-radius: var(--radius-sm);
+}
+
+.statement {
+  --row-background: var(--surface-primary);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.statement caption {
+  text-align: left;
+  padding: 10px 8px;
+  font-weight: 600;
+  background: var(--surface-primary);
+}
+
+.statement th,
+.statement td {
+  padding: 4px 6px;
+  white-space: nowrap;
+  background: var(--row-background);
+}
+
+.statement th:not(:last-child),
+.statement td:not(:last-child) {
+  border-right: 1px solid var(--border-low-contrast);
+}
+
+.statement thead th {
+  --row-background: var(--surface-base);
+  text-align: right;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.statement tbody tr:nth-child(even) {
+  --row-background: var(--surface-secondary);
+}
+
+.statement tbody tr:hover {
+  --row-background: var(--surface-hover);
+}
+
+.statement td {
+  text-align: right;
+}
+
+.statement thead th:first-child,
+.statement tbody th {
+  text-align: left;
+  font-weight: 400;
+}
+
+/* The line-item column stays in place while the periods scroll sideways. */
+.statement tbody th {
+  position: sticky;
+  left: 0;
+}
+
+.statement .total-row th,
+.statement .total-row td {
+  font-weight: 600;
+}

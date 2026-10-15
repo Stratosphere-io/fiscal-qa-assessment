@@ -1,0 +1,26 @@
+{
+  "name": "fiscal-qa-take-home",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "dev": "next dev --hostname localhost --port 3000",
+    "build": "next build",
+    "start": "next start --hostname localhost --port 3000",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.8",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}
